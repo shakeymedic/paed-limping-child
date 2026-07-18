@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limping Child Assessment — NICE / RCEM Evidence-Based</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 4px; }
+        html { scroll-behavior: smooth; }
+        [id^="sec-"] { scroll-margin-top: 140px; }
+
+        input, textarea, select { border-color: #94a3b8; outline: none; transition: all 0.2s; }
+        input:focus, textarea:focus, select:focus { border-color: #01696F; box-shadow: 0 0 0 3px rgba(1,105,111,0.2); }
+
+        .rich-output {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 0.85rem;
+            line-height: 1.45;
+            color: #334155;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            min-height: 24rem;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .section-header {
+            background-color: #1B3A5C;
+            color: white;
+            font-weight: 900;
+            padding: 0.9rem 1.25rem;
+            border-radius: 0.6rem 0.6rem 0 0;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            letter-spacing: 0.01em;
+        }
+        .section-card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08);
+            border: 1px solid #cbd5e1;
+            overflow: hidden;
+        }
+        .section-body { padding: 1.25rem; }
+
+        label.field-label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #475569;
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.02em;
+        }
+        input[type="text"], input[type="number"], input[type="date"], input[type="time"], select, textarea {
+            width: 100%;
+            padding: 0.5rem 0.6rem;
+            font-size: 0.875rem;
+            border-radius: 0.375rem;
+            border: 1px solid #94a3b8;
+            font-weight: 500;
+        }
+
+        .nav-link {
+            padding: 0.28rem 0.65rem;
+            border-radius: 0.375rem;
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            transition: all 0.1s;
+            border: 1px solid transparent;
+            color: #475569;
+            white-space: nowrap;
+        }
+        .nav-link:hover { background-color: #01696F; color: white; }
+
+        .std-btn {
+            transition: all 0.1s;
+            border: 1px solid #cbd5e1;
+            background-color: #f8fafc;
+            color: #334155;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            padding: 0.5rem 0.9rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .std-btn:hover { background-color: #e2e8f0; }
+        .std-btn.active-teal { background-color: #01696F; color: white; border-color: #01464a; }
+        .std-btn.active-red { background-color: #dc2626; color: white; border-color: #991b1b; }
+
+        .radio-pill { cursor: pointer; }
+        .radio-pill input { position: absolute; opacity: 0; }
+        .radio-pill .pill-box {
+            padding: 0.55rem 0.5rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #475569;
+            transition: all 0.1s;
+        }
+        .radio-pill input:checked + .pill-box {
+            background-color: #01696F;
+            color: white;
+            border-color: #01464a;
+        }
+        .radio-pill.danger input:checked + .pill-box {
+            background-color: #dc2626;
+            border-color: #991b1b;
+        }
+
+        .chk-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.6rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.4rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            background: #f8fafc;
+        }
+        .chk-item:hover { background: #f1f5f9; }
+
+        .redflag-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            text-transform: uppercase;
+        }
+        .redflag-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 0.85rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #334155;
+        }
+        .redflag-row.flagged {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .clue-text { font-size: 0.7rem; color: #64748b; font-weight: 500; margin-top: 0.1rem; }
+
+        #kocherResultCard { transition: all 0.2s; }
+
+        @media print {
+            @page { margin: 0.5cm; size: A4 portrait; }
+            body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .no-print { display: none !important; }
+            .section-card { box-shadow: none !important; border: 1px solid #ccc !important; break-inside: avoid; margin-bottom: 0.75rem; }
+            main .grid { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-900 antialiased pb-10">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-300 no-print">
+        <div class="container mx-auto px-4 py-2">
+            <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center gap-3">
+                    <div class="h-11 w-11 rounded-lg flex items-center justify-center text-white font-black text-xs shadow-sm" style="background-color:#1B3A5C;">🦵</div>
+                    <div>
+                        <h1 class="text-lg md:text-xl font-black text-slate-900 leading-tight">Limping Child Assessment
+                            <span class="text-[10px] font-medium text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded border align-middle ml-1">v1.0</span>
+                        </h1>
+                        <p class="text-[10px] font-bold flex items-center gap-2" style="color:#01696F;">
+                            NICE / RCEM Evidence-Based
+                            <span class="text-green-600 flex items-center gap-1" id="saveStatus">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Auto-save
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="resetData" class="px-3 py-1.5 text-[10px] font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded transition uppercase">Reset</button>
+                    <button onclick="window.print()" class="px-3 py-1.5 text-[10px] font-bold text-white rounded transition uppercase" style="background-color:#1B3A5C;">🖨️ Print</button>
+                </div>
+            </div>
+
+            <nav class="flex flex-wrap items-center gap-1.5 pb-1 overflow-x-auto">
+                <a href="#sec-details" class="nav-link bg-slate-50 border-slate-200">Details</a>
+                <a href="#sec-history" class="nav-link bg-slate-50 border-slate-200">History</a>
+                <a href="#sec-exam" class="nav-link bg-slate-50 border-slate-200">Exam</a>
+                <span class="w-px h-4 bg-slate-300 mx-0.5"></span>
+                <a href="#sec-kocher" class="nav-link" style="background:#fef2f2;color:#991b1b;border-color:#fecaca;">Kocher</a>
+                <a href="#sec-investigations" class="nav-link bg-slate-50 border-slate-200">Investigations</a>
+                <a href="#sec-differential" class="nav-link bg-slate-50 border-slate-200">Differentials</a>
+                <a href="#sec-redflags" class="nav-link" style="background:#fef2f2;color:#991b1b;border-color:#fecaca;">Red Flags</a>
+                <a href="#sec-management" class="nav-link bg-slate-50 border-slate-200">Management</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <div class="lg:col-span-8 flex flex-col space-y-6">
+
+                <div class="hidden print:block mb-4 text-center border-b-2 border-slate-800 pb-3">
+                    <h1 class="text-2xl font-black text-slate-900">Limping Child Assessment</h1>
+                    <p class="text-sm text-slate-500 font-bold">NICE / RCEM Evidence-Based Proforma</p>
+                </div>
+
+                <!-- SECTION 1: PATIENT DETAILS -->
+                <section class="section-card" id="sec-details">
+                    <div class="section-header">1. Patient Details</div>
+                    <div class="section-body space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div class="md:col-span-2">
+                                <label class="field-label">Name</label>
+                                <input type="text" id="p_name">
+                            </div>
+                            <div>
+                                <label class="field-label">Date of Birth</label>
+                                <input type="date" id="p_dob">
+                            </div>
+                            <div>
+                                <label class="field-label">Age (calculated)</label>
+                                <input type="text" id="p_age" readonly class="bg-slate-100 font-bold">
+                            </div>
+                            <div>
+                                <label class="field-label">Weight (kg)</label>
+                                <input type="number" id="p_weight" step="0.1">
+                            </div>
+                            <div>
+                                <label class="field-label">Gender</label>
+                                <select id="p_gender">
+                                    <option value=""></option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other / Not stated</option>
+                                </select>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="field-label">Referral Source</label>
+                                <select id="p_referral">
+                                    <option value=""></option>
+                                    <option>Self-presented</option>
+                                    <option>GP referral</option>
+                                    <option>Ambulance</option>
+                                    <option>Urgent care / walk-in centre</option>
+                                    <option>111</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4">
+                            <label class="field-label mb-2">Side Affected</label>
+                            <div class="grid grid-cols-3 gap-2 max-w-md">
+                                <label class="radio-pill"><input type="radio" name="side_affected" value="Left"><div class="pill-box">Left</div></label>
+                                <label class="radio-pill"><input type="radio" name="side_affected" value="Right"><div class="pill-box">Right</div></label>
+                                <label class="radio-pill"><input type="radio" name="side_affected" value="Both"><div class="pill-box">Both</div></label>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4">
+                            <label class="field-label mb-2">Onset</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <label class="radio-pill"><input type="radio" name="onset" value="Acute (<24h)"><div class="pill-box">Acute (&lt;24h)</div></label>
+                                <label class="radio-pill"><input type="radio" name="onset" value="Subacute (1-7 days)"><div class="pill-box">Subacute (1-7d)</div></label>
+                                <label class="radio-pill"><input type="radio" name="onset" value="Chronic (>7 days)"><div class="pill-box">Chronic (&gt;7d)</div></label>
+                                <label class="radio-pill"><input type="radio" name="onset" value="Insidious"><div class="pill-box">Insidious</div></label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                            <div>
+                                <label class="field-label">Duration of Symptoms</label>
+                                <input type="text" id="duration_symptoms" placeholder="e.g. 2 days">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="field-label">Presenting Complaint</label>
+                            <textarea id="presenting_complaint" rows="3" placeholder="Free text summary of presentation..."></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 2: HISTORY -->
+                <section class="section-card" id="sec-history">
+                    <div class="section-header">2. History</div>
+                    <div class="section-body space-y-5">
+
+                        <div>
+                            <label class="field-label mb-2">Pain Location <span class="text-slate-400 font-normal">(select all that apply)</span></label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <label class="chk-item"><input type="checkbox" class="pain-loc" value="Hip"><span>Hip</span></label>
+                                <label class="chk-item"><input type="checkbox" class="pain-loc" value="Knee"><span>Knee</span></label>
+                                <label class="chk-item"><input type="checkbox" class="pain-loc" value="Thigh"><span>Thigh</span></label>
+                                <label class="chk-item"><input type="checkbox" class="pain-loc" value="Shin"><span>Shin</span></label>
+                                <label class="chk-item"><input type="checkbox" class="pain-loc" value="Ankle"><span>Ankle</span></label>
+                                <label class="chk-item"><input type="checkbox" class="pain-loc" value="Foot"><span>Foot</span></label>
+                                <label class="chk-item"><input type="checkbox" class="pain-loc" value="Unlocatable"><span>Unlocatable</span></label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="field-label">Pain Character</label>
+                                <select id="pain_character">
+                                    <option value=""></option>
+                                    <option>Aching</option>
+                                    <option>Sharp</option>
+                                    <option>Constant</option>
+                                    <option>Intermittent</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="field-label">Pain Score (0–10)</label>
+                                <input type="number" id="pain_score" min="0" max="10">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="field-label mb-2">Weight Bearing</label>
+                            <div class="grid grid-cols-3 gap-2 max-w-lg">
+                                <label class="radio-pill"><input type="radio" name="weight_bearing" value="Full"><div class="pill-box">Full</div></label>
+                                <label class="radio-pill"><input type="radio" name="weight_bearing" value="Partial"><div class="pill-box">Partial</div></label>
+                                <label class="radio-pill danger"><input type="radio" name="weight_bearing" value="Non-weight-bearing" id="nwb_radio"><div class="pill-box">NON-WEIGHT BEARING</div></label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Fever Present?</label>
+                                <div class="flex gap-4 mb-2">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="fever_present" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="fever_present" value="No"> No</label>
+                                </div>
+                                <div id="fever_temp_wrap" class="hidden">
+                                    <label class="field-label">Temperature (°C)</label>
+                                    <input type="number" id="fever_temp" step="0.1">
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Recent Illness / URTI?</label>
+                                <div class="flex gap-4 mb-2">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="recent_illness" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="recent_illness" value="No"> No</label>
+                                </div>
+                                <div id="illness_ago_wrap" class="hidden">
+                                    <label class="field-label">How Long Ago?</label>
+                                    <input type="text" id="illness_ago" placeholder="e.g. 1 week ago">
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Recent Trauma / Injury?</label>
+                                <div class="flex gap-4 mb-2">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="recent_trauma" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="recent_trauma" value="No"> No</label>
+                                </div>
+                                <div id="trauma_details_wrap" class="hidden">
+                                    <label class="field-label">Details</label>
+                                    <textarea id="trauma_details" rows="2"></textarea>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Recent Vaccination?</label>
+                                <div class="flex gap-4 mb-2">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="recent_vaccination" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="recent_vaccination" value="No"> No</label>
+                                </div>
+                                <div id="vaccination_details_wrap" class="hidden grid grid-cols-2 gap-2">
+                                    <div><label class="field-label">Which</label><input type="text" id="vaccination_which"></div>
+                                    <div><label class="field-label">How Long Ago</label><input type="text" id="vaccination_ago"></div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Morning Stiffness?</label>
+                                <div class="flex gap-4 mb-2">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="morning_stiffness" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="morning_stiffness" value="No"> No</label>
+                                </div>
+                                <div id="stiffness_duration_wrap" class="hidden">
+                                    <label class="field-label">Duration (minutes)</label>
+                                    <input type="number" id="stiffness_duration">
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Worse With</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="worse_with" value="Activity"> Activity</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="worse_with" value="Rest"> Rest</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <label class="field-label mb-2 text-red-800">Night Pain? <span class="redflag-badge ml-2">Red Flag</span></label>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="night_pain" value="Yes"> Yes</label>
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="night_pain" value="No"> No</label>
+                            </div>
+                        </div>
+
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <label class="field-label mb-2 text-red-800">Constitutional Symptoms <span class="redflag-badge ml-2">Red Flags</span></label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <label class="chk-item"><input type="checkbox" class="constitutional" value="Weight loss"><span>Weight Loss</span></label>
+                                <label class="chk-item"><input type="checkbox" class="constitutional" value="Fatigue"><span>Fatigue</span></label>
+                                <label class="chk-item"><input type="checkbox" class="constitutional" value="Night sweats"><span>Night Sweats</span></label>
+                                <label class="chk-item"><input type="checkbox" class="constitutional" value="Rash"><span>Rash</span></label>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <label class="field-label mb-2">Previous Episodes?</label>
+                            <div class="flex gap-4 mb-2">
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="previous_episodes" value="Yes"> Yes</label>
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="previous_episodes" value="No"> No</label>
+                            </div>
+                            <div id="previous_episodes_details_wrap" class="hidden">
+                                <label class="field-label">Details</label>
+                                <textarea id="previous_episodes_details" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="field-label mb-2">Past Medical History</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <label class="chk-item"><input type="checkbox" class="pmh" value="Previous hip problems"><span>Previous Hip Problems</span></label>
+                                <label class="chk-item"><input type="checkbox" class="pmh" value="Haematological disorder (e.g. sickle cell)"><span>Haem. Disorder (e.g. Sickle Cell)</span></label>
+                                <label class="chk-item"><input type="checkbox" class="pmh" value="Immunocompromised"><span>Immunocompromised</span></label>
+                                <label class="chk-item"><input type="checkbox" class="pmh" value="Malignancy"><span>Malignancy</span></label>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- SECTION 3: EXAMINATION -->
+                <section class="section-card" id="sec-exam">
+                    <div class="section-header">3. Examination</div>
+                    <div class="section-body space-y-5">
+
+                        <div class="bg-amber-50 border-2 border-amber-400 rounded-lg p-3 flex items-start gap-2">
+                            <span class="text-lg">⚠️</span>
+                            <p class="text-sm font-bold text-amber-900">Testicular torsion can present as a limp — examine the testes in all boys presenting with a limp or lower limb/groin pain.</p>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-xl p-4 text-white">
+                            <p class="text-xs font-black uppercase text-slate-300 mb-3">pGALS Screening (Paediatric Gait, Arms, Legs, Spine)</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                                <div class="bg-slate-700 rounded p-3">
+                                    <p class="text-xs font-bold text-teal-300 uppercase mb-1">Gait</p>
+                                    <p class="text-xs text-slate-200">Antalgic / Trendelenburg? Tip-toe walking, then heel walking.</p>
+                                </div>
+                                <div class="bg-slate-700 rounded p-3">
+                                    <p class="text-xs font-bold text-teal-300 uppercase mb-1">Arms</p>
+                                    <p class="text-xs text-slate-200">Restricted range of movement, stiffness, swelling, erythema.</p>
+                                </div>
+                                <div class="bg-slate-700 rounded p-3">
+                                    <p class="text-xs font-bold text-teal-300 uppercase mb-1">Legs</p>
+                                    <p class="text-xs text-slate-200">Bruising, deformity, erythema, pelvis level, leg lengths equal? Feel for knee effusion/warmth; passive/active knee flexion with IR/ER of hip — compare IR of both hips (restricted IR is a sensitive sign of hip pathology).</p>
+                                </div>
+                                <div class="bg-slate-700 rounded p-3">
+                                    <p class="text-xs font-bold text-teal-300 uppercase mb-1">Spine</p>
+                                    <p class="text-xs text-slate-200">Observe from side and behind; ask child to touch toes.</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <label class="chk-item" style="background:#334155;color:white;border-color:#475569;"><input type="checkbox" id="pgals_gait_normal"><span>Gait — Normal</span></label>
+                                <label class="chk-item" style="background:#334155;color:white;border-color:#475569;"><input type="checkbox" id="pgals_arms_normal"><span>Arms — Normal</span></label>
+                                <label class="chk-item" style="background:#334155;color:white;border-color:#475569;"><input type="checkbox" id="pgals_legs_normal"><span>Legs — Normal</span></label>
+                                <label class="chk-item" style="background:#334155;color:white;border-color:#475569;"><input type="checkbox" id="pgals_spine_normal"><span>Spine — Normal</span></label>
+                            </div>
+                            <div class="mt-3">
+                                <label class="field-label text-slate-300">pGALS Notes</label>
+                                <textarea id="pgals_notes" rows="2" class="bg-slate-700 border-slate-600 text-white placeholder-slate-400" placeholder="Additional pGALS findings..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="field-label">Temperature (°C)</label>
+                                <input type="number" id="exam_temp" step="0.1">
+                                <p id="temp_flag" class="text-xs font-bold text-red-600 mt-1 hidden">⚠️ &gt;38.5°C — fever flag</p>
+                            </div>
+                            <div>
+                                <label class="field-label">Heart Rate (bpm)</label>
+                                <input type="number" id="exam_hr">
+                            </div>
+                            <div>
+                                <label class="field-label">Other Observations</label>
+                                <input type="text" id="exam_obs" placeholder="RR / SpO2 / BP...">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="field-label mb-2">General Appearance</label>
+                            <div class="grid grid-cols-3 gap-2 max-w-lg">
+                                <label class="radio-pill"><input type="radio" name="general_appearance" value="Well"><div class="pill-box">Well</div></label>
+                                <label class="radio-pill"><input type="radio" name="general_appearance" value="Unwell"><div class="pill-box">Unwell</div></label>
+                                <label class="radio-pill danger"><input type="radio" name="general_appearance" value="Toxic" id="toxic_radio"><div class="pill-box">TOXIC</div></label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="field-label mb-2">Gait</label>
+                            <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
+                                <label class="chk-item"><input type="checkbox" class="gait" value="Antalgic"><span>Antalgic</span></label>
+                                <label class="chk-item"><input type="checkbox" class="gait" value="Trendelenburg"><span>Trendelenburg</span></label>
+                                <label class="chk-item"><input type="checkbox" class="gait" value="Short leg"><span>Short Leg</span></label>
+                                <label class="chk-item"><input type="checkbox" class="gait" value="Equinus"><span>Equinus</span></label>
+                                <label class="chk-item"><input type="checkbox" class="gait" value="Unable to walk"><span>Unable to Walk</span></label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="field-label mb-2">Affected Limb</label>
+                            <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
+                                <label class="chk-item"><input type="checkbox" class="limb-sign" value="Swelling"><span>Swelling</span></label>
+                                <label class="chk-item"><input type="checkbox" class="limb-sign" value="Erythema"><span>Erythema</span></label>
+                                <label class="chk-item"><input type="checkbox" class="limb-sign" value="Warmth"><span>Warmth</span></label>
+                                <label class="chk-item"><input type="checkbox" class="limb-sign" value="Deformity"><span>Deformity</span></label>
+                                <label class="chk-item"><input type="checkbox" class="limb-sign" value="Muscle wasting"><span>Muscle Wasting</span></label>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4">
+                            <label class="field-label mb-2">Hip Examination</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-2">
+                                <div>
+                                    <label class="field-label">Internal Rotation (°)</label>
+                                    <input type="number" id="hip_ir">
+                                </div>
+                                <div>
+                                    <label class="field-label">External Rotation (°)</label>
+                                    <input type="number" id="hip_er">
+                                </div>
+                                <div>
+                                    <label class="field-label">Flexion (°)</label>
+                                    <input type="number" id="hip_flexion">
+                                </div>
+                                <div>
+                                    <label class="field-label">Abduction (°)</label>
+                                    <input type="number" id="hip_abduction">
+                                </div>
+                            </div>
+                            <p class="clue-text mb-3">Reduced internal rotation suggests intra-articular hip pathology (septic arthritis, transient synovitis, SUFE, Perthes).</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="field-label mb-1">Pain on Movement?</label>
+                                    <div class="flex gap-4">
+                                        <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="hip_pain_movement" value="Yes"> Yes</label>
+                                        <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="hip_pain_movement" value="No"> No</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="field-label mb-1">Log Roll Test</label>
+                                    <div class="flex gap-3">
+                                        <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="log_roll" value="Positive"> Positive</label>
+                                        <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="log_roll" value="Negative"> Negative</label>
+                                        <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="log_roll" value="Not performed"> Not Performed</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4">
+                            <label class="field-label mb-2">Knee Examination</label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <label class="chk-item"><input type="checkbox" class="knee-exam" value="Effusion"><span>Effusion</span></label>
+                                <label class="chk-item"><input type="checkbox" class="knee-exam" value="Tenderness"><span>Tenderness</span></label>
+                                <label class="chk-item"><input type="checkbox" class="knee-exam" value="Range of movement restricted"><span>ROM Restricted</span></label>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4">
+                            <label class="field-label mb-2">Spine Assessment</label>
+                            <div class="grid grid-cols-3 gap-2 max-w-lg">
+                                <label class="radio-pill"><input type="radio" name="spine_assessment" value="Scoliosis"><div class="pill-box">Scoliosis</div></label>
+                                <label class="radio-pill"><input type="radio" name="spine_assessment" value="Tenderness"><div class="pill-box">Tenderness</div></label>
+                                <label class="radio-pill"><input type="radio" name="spine_assessment" value="Normal"><div class="pill-box">Normal</div></label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                            <div>
+                                <label class="field-label mb-1">Thomas Test</label>
+                                <div class="flex gap-3">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="thomas_test" value="Positive"> Positive</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="thomas_test" value="Negative"> Negative</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="thomas_test" value="Not performed"> Not Performed</label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="field-label mb-1">FABER Test</label>
+                                <div class="flex gap-3">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="faber_test" value="Positive"> Positive</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="faber_test" value="Negative"> Negative</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="faber_test" value="Not performed"> Not Performed</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4">
+                            <label class="field-label mb-2">Leg Length Discrepancy</label>
+                            <div class="flex gap-4 mb-2">
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="leg_length_discrepancy" value="Yes"> Yes</label>
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="leg_length_discrepancy" value="No"> No</label>
+                            </div>
+                            <div id="leg_length_measured_wrap" class="hidden max-w-xs">
+                                <label class="field-label">Measured Discrepancy (cm)</label>
+                                <input type="number" id="leg_length_measured" step="0.1">
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- SECTION 4: KOCHER CRITERIA -->
+                <section class="section-card border-2 border-red-300" id="sec-kocher">
+                    <div class="section-header" style="background-color:#7f1d1d;">4. Kocher Criteria — Septic Arthritis of the Hip</div>
+                    <div class="section-body space-y-4">
+                        <p class="text-xs text-slate-500">Four original Kocher (1999) criteria plus the Caird (2006) modification (CRP). Live probability calculated as each criterion is answered.</p>
+
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
+                                <span class="text-sm font-bold text-slate-800">1. Fever &gt;38.5°C (history or measured)</span>
+                                <div class="flex gap-3">
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="kocher_fever" value="Yes" class="kocher-input"> Yes</label>
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="kocher_fever" value="No" class="kocher-input"> No</label>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
+                                <span class="text-sm font-bold text-slate-800">2. Non-weight bearing</span>
+                                <div class="flex gap-3">
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="kocher_nwb" value="Yes" class="kocher-input"> Yes</label>
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="kocher_nwb" value="No" class="kocher-input"> No</label>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
+                                <span class="text-sm font-bold text-slate-800">3. ESR ≥40 mm/hr (if available)</span>
+                                <div class="flex gap-3">
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="kocher_esr" value="Yes" class="kocher-input"> Yes</label>
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="kocher_esr" value="No" class="kocher-input"> No</label>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
+                                <span class="text-sm font-bold text-slate-800">4. WBC &gt;12,000/mm³ (if available)</span>
+                                <div class="flex gap-3">
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="kocher_wbc" value="Yes" class="kocher-input"> Yes</label>
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="kocher_wbc" value="No" class="kocher-input"> No</label>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border border-amber-300 rounded-lg bg-amber-50">
+                                <span class="text-sm font-bold text-amber-900">5. CRP &gt;20 mg/L <span class="text-[10px] font-black uppercase bg-amber-200 text-amber-900 px-1.5 py-0.5 rounded ml-1">Caird Modification</span></span>
+                                <div class="flex gap-3">
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="kocher_crp" value="Yes" class="kocher-input"> Yes</label>
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="kocher_crp" value="No" class="kocher-input"> No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="kocherResultCard" class="p-4 rounded-xl border-2 bg-slate-50 border-slate-300 text-center">
+                            <p class="text-xs font-black uppercase text-slate-500 mb-1">Kocher Score</p>
+                            <p class="text-3xl font-black text-slate-800" id="kocherScoreDisplay">0 / 5</p>
+                            <p class="text-lg font-black mt-1" id="kocherProbDisplay">16.9% — Unlikely septic arthritis</p>
+                            <p class="text-xs font-bold mt-1" id="kocherActionDisplay">Continue standard assessment; consider transient synovitis</p>
+                        </div>
+
+                        <div class="bg-red-900 text-white rounded-lg p-3 text-center">
+                            <p class="text-sm font-black">⚠️ Septic arthritis can still be present in the absence of these criteria.</p>
+                        </div>
+
+                        <div class="bg-amber-50 border border-amber-300 rounded-lg p-3">
+                            <p class="text-xs font-black uppercase text-amber-900 mb-1">Management Trigger (Local Guideline)</p>
+                            <p class="text-xs text-amber-900 font-semibold">If features consistent with septic arthritis (severe pain OR range of movement &lt;75% of normal) → urgent orthopaedics referral.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 5: INVESTIGATIONS -->
+                <section class="section-card" id="sec-investigations">
+                    <div class="section-header">5. Investigations</div>
+                    <div class="section-body space-y-5">
+
+                        <div class="bg-sky-50 border-2 border-sky-300 rounded-lg p-3">
+                            <p class="text-xs font-black uppercase text-sky-900 mb-1">Joint Aspiration Note (Local Guideline)</p>
+                            <p class="text-xs text-sky-900 font-semibold">If suspicion of transient synovitis or septic arthritis, perform joint aspiration with microscopy and culture — these CANNOT usually be differentiated by ultrasound and require laboratory and clinical correlation.</p>
+                        </div>
+
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <p class="text-xs font-black uppercase text-slate-600 mb-1">Investigations per Local Guideline</p>
+                            <p class="text-xs text-slate-600">FBC + blood film, ESR, CRP, blood cultures if febrile. X-ray 2 views (site of pain + pelvis). If SUFE suspected: AP + frog lateral. If osteomyelitis / persisting symptoms: MRI pelvis ± contrast with paediatric radiologist, bone scan, CT (as addition to MRI). CK, sickle cell screen.</p>
+                        </div>
+
+                        <div>
+                            <label class="field-label mb-2">Bloods Ordered</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="FBC"><span>FBC</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="CRP"><span>CRP</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="ESR"><span>ESR</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="U&E"><span>U&amp;E</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="Blood cultures"><span>Blood Cultures</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="Blood glucose"><span>Blood Glucose</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="Sickle cell screen"><span>Sickle Cell Screen</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="LFT"><span>LFT</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="Coagulation"><span>Coagulation</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="Bone profile"><span>Bone Profile</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="LDH"><span>LDH</span></label>
+                                <label class="chk-item"><input type="checkbox" class="bloods" value="Uric acid"><span>Uric Acid</span></label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-slate-200 pt-4">
+                            <div>
+                                <label class="field-label">WBC (/mm³)</label>
+                                <input type="number" id="result_wbc">
+                                <p id="wbc_flag" class="text-xs font-bold text-red-600 mt-1 hidden">⚠️ &gt;12,000 — Kocher criterion met</p>
+                            </div>
+                            <div>
+                                <label class="field-label">CRP (mg/L)</label>
+                                <input type="number" id="result_crp">
+                                <p id="crp_flag" class="text-xs font-bold text-red-600 mt-1 hidden">⚠️ &gt;20 — Caird criterion met</p>
+                            </div>
+                            <div>
+                                <label class="field-label">ESR (mm/hr)</label>
+                                <input type="number" id="result_esr">
+                                <p id="esr_flag" class="text-xs font-bold text-red-600 mt-1 hidden">⚠️ ≥40 — Kocher criterion met</p>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4 space-y-3">
+                            <label class="field-label mb-1">X-Ray</label>
+                            <div class="flex gap-4 mb-2">
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="xray_requested" value="Yes"> Requested — Yes</label>
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="xray_requested" value="No"> Requested — No</label>
+                            </div>
+                            <div id="xray_details_wrap" class="hidden space-y-3">
+                                <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
+                                    <label class="chk-item"><input type="checkbox" class="xray-view" value="AP pelvis"><span>AP Pelvis</span></label>
+                                    <label class="chk-item"><input type="checkbox" class="xray-view" value="Lateral hip"><span>Lateral Hip</span></label>
+                                    <label class="chk-item"><input type="checkbox" class="xray-view" value="Knee"><span>Knee</span></label>
+                                    <label class="chk-item"><input type="checkbox" class="xray-view" value="Ankle"><span>Ankle</span></label>
+                                    <label class="chk-item"><input type="checkbox" class="xray-view" value="Full limb"><span>Full Limb</span></label>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="field-label">X-Ray Result</label>
+                                        <select id="xray_result">
+                                            <option value=""></option>
+                                            <option>Normal</option>
+                                            <option>Widened joint space</option>
+                                            <option>SUFE (Klein's line abnormal)</option>
+                                            <option>Perthes changes</option>
+                                            <option>Fracture</option>
+                                            <option>Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="field-label">Notes</label>
+                                        <input type="text" id="xray_notes">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4 space-y-3">
+                            <label class="field-label mb-1">Ultrasound Hip</label>
+                            <div class="flex gap-4 mb-2">
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="us_hip_requested" value="Yes"> Requested — Yes</label>
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="us_hip_requested" value="No"> Requested — No</label>
+                            </div>
+                            <div id="us_details_wrap" class="hidden grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div>
+                                    <label class="field-label mb-1">Effusion Present?</label>
+                                    <div class="flex gap-3">
+                                        <label class="flex items-center gap-2 text-xs font-bold"><input type="radio" name="us_effusion" value="Yes"> Yes</label>
+                                        <label class="flex items-center gap-2 text-xs font-bold"><input type="radio" name="us_effusion" value="No"> No</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="field-label">Volume (ml, if known)</label>
+                                    <input type="number" id="us_volume" step="0.1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                            <div>
+                                <label class="field-label mb-1">MRI Requested?</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="mri_requested" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="mri_requested" value="No"> No</label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="field-label mb-1">Bone Scan?</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="bone_scan" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="bone_scan" value="No"> No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- SECTION 6: DIFFERENTIAL DIAGNOSIS -->
+                <section class="section-card border-2 border-teal-200" id="sec-differential">
+                    <div class="section-header" style="background-color:#01696F;">6. Differential Diagnosis Checklist</div>
+                    <div class="section-body space-y-5">
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <p class="text-xs font-black uppercase text-slate-600 mb-2">0–3yr</p>
+                                <ul class="text-xs text-slate-600 space-y-1 list-disc ml-4">
+                                    <li>Septic arthritis / osteomyelitis</li>
+                                    <li>Developmental hip dysplasia</li>
+                                    <li>Fracture / soft tissue (toddler's fractures / NAI)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <p class="text-xs font-black uppercase text-slate-600 mb-2">3–10yr</p>
+                                <ul class="text-xs text-slate-600 space-y-1 list-disc ml-4">
+                                    <li>Transient synovitis / irritable hip</li>
+                                    <li>Septic arthritis / osteomyelitis</li>
+                                    <li>Perthes disease</li>
+                                    <li>Fracture / soft tissue (stress fracture)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <p class="text-xs font-black uppercase text-slate-600 mb-2">10–15yr</p>
+                                <ul class="text-xs text-slate-600 space-y-1 list-disc ml-4">
+                                    <li>SUFE</li>
+                                    <li>Septic arthritis / osteomyelitis</li>
+                                    <li>Perthes disease</li>
+                                    <li>Fracture / soft tissue (stress fracture)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <p class="text-xs font-black uppercase text-slate-600 mb-2">Other (All Ages)</p>
+                            <ul class="text-xs text-slate-600 grid grid-cols-1 md:grid-cols-2 gap-1 list-disc ml-4">
+                                <li>Non-accidental injury (NAI) — all ages</li>
+                                <li>Neoplastic (e.g. ALL)</li>
+                                <li>Haematological (e.g. sickle cell)</li>
+                                <li>Pyomyositis / discitis</li>
+                                <li>Rickets</li>
+                                <li>Neuromuscular (CP / muscular dystrophy)</li>
+                                <li>Limb length inequality</li>
+                                <li>JIA</li>
+                            </ul>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4 space-y-2">
+                            <p class="text-xs font-black uppercase text-slate-500 mb-2">Clinical Clues</p>
+                            <div class="text-xs text-slate-600 space-y-1.5">
+                                <p><strong class="text-slate-800">Transient synovitis:</strong> Kocher 0-1, no fever, recent URTI, self-limiting</p>
+                                <p><strong class="text-slate-800">Septic arthritis:</strong> Systemically unwell, Kocher ≥3, urgent joint aspiration</p>
+                                <p><strong class="text-slate-800">Perthes:</strong> Insidious onset 4-8yr, decreased IR, avascular necrosis</p>
+                                <p><strong class="text-slate-800">SUFE:</strong> Obese adolescent, hip/knee pain, Trethowan sign on X-ray</p>
+                                <p><strong class="text-slate-800">Osteomyelitis:</strong> Fever, point tenderness over bone, elevated inflammatory markers</p>
+                                <p><strong class="text-slate-800">Leukaemia/malignancy:</strong> Night pain, weight loss, anaemia, lymphadenopathy — urgent haematology</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-teal-50 border-2 border-teal-300 rounded-lg p-4">
+                            <p class="text-xs font-black uppercase text-teal-900 mb-2">Transient Synovitis — Key Points (Local Guideline)</p>
+                            <ul class="text-xs text-teal-900 space-y-1 list-disc ml-4">
+                                <li>Commonest atraumatic cause of limp; typically age 3–8yr; male predominance</li>
+                                <li><strong>Caution in &lt;3yr</strong> — increased risk of NAI / septic arthritis; transient synovitis is rare — investigate ALL &lt;3yr</li>
+                                <li>Diagnosis of <strong>exclusion</strong> — always consider septic arthritis</li>
+                                <li>Symptoms &lt;48hr + systemically well + afebrile + able to weight bear → no further investigations necessary</li>
+                                <li>Follow up at 48hr; investigate if symptoms persist</li>
+                                <li>Age &gt;8yr with risk factors for SUFE: further investigations including AP and frog lateral X-rays</li>
+                            </ul>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="field-label">Most Likely Diagnosis</label>
+                                <select id="most_likely_dx">
+                                    <option value=""></option>
+                                    <option>Septic arthritis / osteomyelitis</option>
+                                    <option>Developmental hip dysplasia</option>
+                                    <option>Fracture / soft tissue injury (toddler's fracture / NAI)</option>
+                                    <option>Transient synovitis / irritable hip</option>
+                                    <option>Perthes disease</option>
+                                    <option>Stress fracture</option>
+                                    <option>SUFE</option>
+                                    <option>Non-accidental injury (NAI)</option>
+                                    <option>Neoplastic (e.g. ALL)</option>
+                                    <option>Haematological (e.g. sickle cell)</option>
+                                    <option>Pyomyositis / discitis</option>
+                                    <option>Rickets</option>
+                                    <option>Neuromuscular (CP / muscular dystrophy)</option>
+                                    <option>Limb length inequality</option>
+                                    <option>Juvenile idiopathic arthritis (JIA)</option>
+                                    <option>Other (free text)</option>
+                                </select>
+                                <input type="text" id="most_likely_dx_other" placeholder="If Other, specify..." class="mt-2 hidden">
+                            </div>
+                            <div>
+                                <label class="field-label mb-2">Differential Diagnoses <span class="text-slate-400 font-normal">(select all considered)</span></label>
+                                <div class="grid grid-cols-1 gap-1 max-h-40 overflow-y-auto border border-slate-200 rounded p-2">
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Septic arthritis / osteomyelitis"> Septic arthritis / osteomyelitis</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Developmental hip dysplasia"> Developmental hip dysplasia</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Fracture / soft tissue injury (toddler's fracture / NAI)"> Fracture / soft tissue injury (toddler's fracture / NAI)</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Transient synovitis / irritable hip"> Transient synovitis / irritable hip</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Perthes disease"> Perthes disease</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Stress fracture"> Stress fracture</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="SUFE"> SUFE</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Non-accidental injury (NAI)"> Non-accidental injury (NAI)</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Neoplastic (e.g. ALL)"> Neoplastic (e.g. ALL)</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Haematological (e.g. sickle cell)"> Haematological (e.g. sickle cell)</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Pyomyositis / discitis"> Pyomyositis / discitis</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Rickets"> Rickets</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Neuromuscular (CP / muscular dystrophy)"> Neuromuscular (CP / muscular dystrophy)</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="Limb length inequality"> Limb length inequality</label>
+                                    <label class="flex items-center gap-2 text-xs font-semibold"><input type="checkbox" class="differential" value="JIA"> JIA</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 7: RED FLAGS -->
+                <section class="section-card border-2 border-red-300" id="sec-redflags">
+                    <div class="section-header" style="background-color:#7f1d1d;">7. Red Flags (Local Guideline)</div>
+                    <div class="section-body space-y-2" id="redflags_container">
+                        <div class="redflag-row" data-flag="age_lt3">
+                            <span>Age &lt;3yr</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="unable_wb">
+                            <span>Unable to weight bear</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="pseudoparesis">
+                            <span>Pseudoparesis</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="fever">
+                            <span>Fever</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="unwell_toxic">
+                            <span>Systemically unwell</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="lymphadenopathy_hsm">
+                            <span>Lymphadenopathy / hepatosplenomegaly</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="night_pain">
+                            <span>Night pain / night sweats</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="multi_joint_6wk">
+                            <span>Multiple joints affected / symptoms &gt;6 weeks</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="age_gt9_hip">
+                            <span>Age &gt;9yr with pain / restricted hip movement</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="kocher3">
+                            <span>Kocher score ≥3</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="malignancy">
+                            <span>Suspected malignancy</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="neurovascular">
+                            <span>Neurovascular compromise</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="redflag-row" data-flag="nai">
+                            <span>Suspected non-accidental injury</span><span class="redflag-badge hidden">Flagged</span>
+                        </div>
+                        <div class="pt-3 border-t border-slate-200 mt-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <label class="chk-item"><input type="checkbox" id="rf_pseudoparesis_manual"><span>Manually flag: Pseudoparesis present</span></label>
+                            <label class="chk-item"><input type="checkbox" id="rf_lymphadenopathy_manual"><span>Manually flag: Lymphadenopathy / hepatosplenomegaly</span></label>
+                            <label class="chk-item"><input type="checkbox" id="rf_multijoint_manual"><span>Manually flag: Multiple joints / symptoms &gt;6 weeks</span></label>
+                            <label class="chk-item"><input type="checkbox" id="rf_neurovascular_manual"><span>Manually flag: Neurovascular compromise present</span></label>
+                            <label class="chk-item"><input type="checkbox" id="rf_nai_manual"><span>Manually flag: Suspected NAI</span></label>
+                            <label class="chk-item"><input type="checkbox" id="rf_malignancy_manual"><span>Manually flag: Malignancy suspected clinically</span></label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 8: MANAGEMENT -->
+                <section class="section-card" id="sec-management">
+                    <div class="section-header">8. Management &amp; Disposition</div>
+                    <div class="section-body space-y-5">
+
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                            <label class="field-label mb-2">Analgesia Given?</label>
+                            <div class="flex gap-4 mb-2">
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="analgesia_given" value="Yes"> Yes</label>
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="analgesia_given" value="No"> No</label>
+                            </div>
+                            <div id="analgesia_details_wrap" class="hidden">
+                                <label class="field-label">What / Dose</label>
+                                <input type="text" id="analgesia_details" placeholder="e.g. Paracetamol 15mg/kg PO">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Orthopaedics Referral</label>
+                                <div class="flex gap-3 mb-2">
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="ortho_referral" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="ortho_referral" value="No"> No</label>
+                                    <label class="flex items-center gap-1 text-xs font-bold"><input type="radio" name="ortho_referral" value="Pending"> Pending</label>
+                                </div>
+                                <div id="ortho_urgency_wrap" class="hidden">
+                                    <label class="field-label">Urgency</label>
+                                    <select id="ortho_urgency">
+                                        <option value=""></option>
+                                        <option>Immediate</option>
+                                        <option>Same day</option>
+                                        <option>Next clinic</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Rheumatology Referral</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="rheum_referral" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="rheum_referral" value="No"> No</label>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Haematology / Oncology Referral</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="haem_onc_referral" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="haem_onc_referral" value="No"> No</label>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Antibiotics?</label>
+                                <div class="flex gap-4 mb-2">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="antibiotics_given" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="antibiotics_given" value="No"> No</label>
+                                </div>
+                                <div id="antibiotics_which_wrap" class="hidden">
+                                    <label class="field-label">Which</label>
+                                    <input type="text" id="antibiotics_which">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4">
+                            <label class="field-label mb-2">Joint Aspiration?</label>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="joint_aspiration" value="Yes"> Yes</label>
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="joint_aspiration" value="No"> No</label>
+                                <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="joint_aspiration" value="Planned"> Planned</label>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4">
+                            <label class="field-label mb-2">Disposition</label>
+                            <select id="disposition">
+                                <option value=""></option>
+                                <option>Home with advice</option>
+                                <option>Come back if worsening</option>
+                                <option>Orthopaedic admission</option>
+                                <option>General paediatric admission</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Safety Netting Advice Given?</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="safety_netting" value="Yes"> Yes</label>
+                                    <label class="flex items-center gap-2 text-sm font-bold"><input type="radio" name="safety_netting" value="No"> No</label>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                                <label class="field-label mb-2">Follow-Up</label>
+                                <select id="followup_type">
+                                    <option value=""></option>
+                                    <option>GP</option>
+                                    <option>Ortho clinic</option>
+                                    <option>Paeds clinic</option>
+                                    <option>None required</option>
+                                </select>
+                                <input type="text" id="followup_details" placeholder="Details..." class="mt-2">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                            <div>
+                                <label class="field-label">Responsible Clinician Name</label>
+                                <input type="text" id="responsible_clinician">
+                            </div>
+                            <div>
+                                <label class="field-label">Senior Review By</label>
+                                <input type="text" id="senior_review">
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <footer class="mt-4 py-6 text-center border-t border-slate-300 no-print">
+                    <p class="text-xs text-slate-500 font-bold">Limping Child Assessment Tool — NICE / RCEM / IAEM Evidence-Based</p>
+                </footer>
+            </div>
+
+            <div class="lg:col-span-4 relative no-print">
+                <div class="sticky top-24 space-y-4">
+                    <section class="bg-white p-4 rounded-xl shadow-lg border border-slate-300">
+                        <div class="flex justify-between items-center mb-3">
+                            <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">EPR Note</h2>
+                            <button id="copy-rich-text-btn" onclick="copyRichText()" class="px-3 py-1 text-xs font-bold text-white rounded hover:opacity-90 transition shadow-sm bg-blue-600">Copy Rich Text</button>
+                        </div>
+                        <div id="epr-output" contenteditable="true" class="rich-output" style="min-height: 32rem;"></div>
+                    </section>
+                    <button type="button" onclick="window.print()" class="w-full std-btn text-white text-sm py-3 shadow-lg" style="background-color:#1B3A5C;">🖨️ Print Full Assessment</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
