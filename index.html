@@ -178,6 +178,50 @@
             main .grid { grid-template-columns: 1fr !important; }
         }
     </style>
+<style>
+/* ── SharePoint-safe two-column layout ───────────────────── */
+.app-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.25rem;
+    align-items: start;
+}
+.app-main-col {
+    min-width: 0;
+}
+.app-epr-col {
+    position: sticky;
+    top: 72px;
+    max-height: calc(100vh - 82px);
+    overflow-y: auto;
+}
+@media print {
+    .app-epr-col { display: none !important; }
+    .app-grid { display: block !important; }
+}
+</style>
+<style>
+/* ── SharePoint-safe two-column layout ───────────────────── */
+.app-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.25rem;
+    align-items: start;
+}
+.app-main-col {
+    min-width: 0;
+}
+.app-epr-col {
+    position: sticky;
+    top: 72px;
+    max-height: calc(100vh - 82px);
+    overflow-y: auto;
+}
+@media print {
+    .app-epr-col { display: none !important; }
+    .app-grid { display: block !important; }
+}
+</style>
 </head>
 <body class="bg-slate-100 text-slate-900 antialiased pb-10">
 
@@ -219,9 +263,9 @@
     </header>
 
     <main class="container mx-auto px-4 py-6">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="app-grid">
 
-            <div class="lg:col-span-8 flex flex-col space-y-6">
+            <div class="app-main-col">
 
                 <div class="hidden print:block mb-4 text-center border-b-2 border-slate-800 pb-3">
                     <h1 class="text-2xl font-black text-slate-900">Limping Child Assessment</h1>
@@ -1124,7 +1168,7 @@
                 </footer>
             </div>
 
-            <div class="lg:col-span-4 relative no-print">
+            <div class="app-epr-col no-print">
                 <div class="sticky top-24 space-y-4">
                     <section class="bg-white p-4 rounded-xl shadow-lg border border-slate-300">
                         <div class="flex justify-between items-center mb-3">
