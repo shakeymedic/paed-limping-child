@@ -282,9 +282,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ===================== EPR NOTE GENERATOR =====================
-    function line(label, value) {
-        if (value === undefined || value === null || value === '') return '';
-        return label + ': ' + value + '\n';
+    function esc(str) {
+        if (str === undefined || str === null) return '';
+        return String(str);
+    }
+
+    function ph(text) {
+        return `<span style="color:#94a3b8">[${text || 'not recorded'}]</span>`;
+    }
+
+    function fieldVal(v, placeholder) {
+        return (v !== undefined && v !== null && v !== '') ? esc(v) : ph(placeholder);
+    }
+
+    function heading(text) {
+        return `<br><b style="font-weight:bold;">${text}</b><br>`;
     }
 
     function updateNotes() {
@@ -293,135 +305,134 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateStr = now.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' });
         const timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 
-        n += 'LIMPING CHILD ASSESSMENT [' + dateStr + ' ' + timeStr + ']\n';
-        n += '========================================\n\n';
+        n += `<b style="font-weight:bold;">LIMPING CHILD ASSESSMENT</b> <span style="font-size:0.85em;color:#64748b;">[${dateStr} ${timeStr}]</span><br>`;
 
         // --- Patient summary ---
-        n += 'PATIENT SUMMARY\n';
-        n += line('Name', val('p_name'));
-        n += line('DOB', val('p_dob'));
-        n += line('Age', val('p_age'));
-        n += line('Weight', val('p_weight') ? val('p_weight') + ' kg' : '');
-        n += line('Gender', val('p_gender'));
-        n += line('Side Affected', findCheckedRadio('side_affected'));
-        n += line('Onset', findCheckedRadio('onset'));
-        n += line('Duration of Symptoms', val('duration_symptoms'));
-        n += line('Referral Source', val('p_referral'));
-        if (val('presenting_complaint')) n += line('Presenting Complaint', val('presenting_complaint'));
-        n += '\n';
+        n += heading('PATIENT SUMMARY');
+        n += `Name: ${fieldVal(val('p_name'))} | DOB: ${fieldVal(val('p_dob'))} | Age: ${fieldVal(val('p_age'))} | Weight: ${val('p_weight') ? esc(val('p_weight')) + ' kg' : ph('not recorded')} | Gender: ${fieldVal(val('p_gender'))}<br>`;
+        n += `Side affected: ${fieldVal(findCheckedRadio('side_affected'))} | Onset: ${fieldVal(findCheckedRadio('onset'))} | Duration: ${fieldVal(val('duration_symptoms'))}<br>`;
+        n += `Referral source: ${fieldVal(val('p_referral'))}<br>`;
+        n += `Presenting complaint: ${fieldVal(val('presenting_complaint'))}<br>`;
 
-        // --- History summary ---
-        n += 'HISTORY SUMMARY\n';
+        // --- History ---
+        n += heading('HISTORY');
         const painLoc = checkedValues('.pain-loc');
-        n += line('Pain Location', painLoc.join(', '));
-        n += line('Pain Character', val('pain_character'));
-        n += line('Pain Score', val('pain_score') ? val('pain_score') + '/10' : '');
-        n += line('Weight Bearing', findCheckedRadio('weight_bearing'));
+        n += `Pain location: ${painLoc.length ? esc(painLoc.join(', ')) : ph('not specified')} | Character: ${fieldVal(val('pain_character'))} | Score: ${val('pain_score') ? esc(val('pain_score')) + '/10' : ph('not recorded')}<br>`;
+        const wb = findCheckedRadio('weight_bearing');
+        const wbText = wb === 'Non-weight-bearing'
+            ? `<span style="color:#dc2626;font-weight:bold">⚠️ POSITIVE: Non-weight-bearing</span>`
+            : fieldVal(wb);
+        n += `Weight bearing: ${wbText}<br>`;
         const feverPresent = findCheckedRadio('fever_present');
-        n += line('Fever', feverPresent === 'Yes' ? 'Yes' + (val('fever_temp') ? ' (' + val('fever_temp') + '°C)' : '') : feverPresent);
+        const feverText = feverPresent === 'Yes'
+            ? `<span style="color:#d97706;font-weight:bold">⚠️ Yes</span>${val('fever_temp') ? ' (' + esc(val('fever_temp')) + '°C)' : ''}`
+            : fieldVal(feverPresent);
+        n += `Fever: ${feverText}${val('fever_temp') && feverPresent !== 'Yes' ? ' | Temperature: ' + esc(val('fever_temp')) : ''}<br>`;
         const illness = findCheckedRadio('recent_illness');
-        n += line('Recent Illness/URTI', illness === 'Yes' ? 'Yes' + (val('illness_ago') ? ' (' + val('illness_ago') + ')' : '') : illness);
+        n += `Recent URTI: ${fieldVal(illness === 'Yes' ? 'Yes' + (val('illness_ago') ? ' (' + val('illness_ago') + ')' : '') : illness)} | `;
         const trauma = findCheckedRadio('recent_trauma');
-        n += line('Recent Trauma', trauma === 'Yes' ? 'Yes — ' + val('trauma_details') : trauma);
+        n += `Recent trauma: ${fieldVal(trauma === 'Yes' ? 'Yes — ' + val('trauma_details') : trauma)} | `;
         const vacc = findCheckedRadio('recent_vaccination');
-        n += line('Recent Vaccination', vacc === 'Yes' ? 'Yes — ' + val('vaccination_which') + (val('vaccination_ago') ? ' (' + val('vaccination_ago') + ')' : '') : vacc);
+        n += `Recent vaccination: ${fieldVal(vacc === 'Yes' ? 'Yes — ' + val('vaccination_which') + (val('vaccination_ago') ? ' (' + val('vaccination_ago') + ')' : '') : vacc)}<br>`;
         const stiff = findCheckedRadio('morning_stiffness');
-        n += line('Morning Stiffness', stiff === 'Yes' ? 'Yes' + (val('stiffness_duration') ? ' (' + val('stiffness_duration') + ' min)' : '') : stiff);
-        n += line('Worse With', findCheckedRadio('worse_with'));
-        n += line('Night Pain', findCheckedRadio('night_pain'));
+        n += `Morning stiffness: ${fieldVal(stiff === 'Yes' ? 'Yes' + (val('stiffness_duration') ? ' (' + val('stiffness_duration') + ' min)' : '') : stiff)} | `;
+        const nightPain = findCheckedRadio('night_pain');
+        const nightPainText = nightPain === 'Yes'
+            ? `<span style="color:#dc2626;font-weight:bold">⚠️ Yes</span>`
+            : fieldVal(nightPain);
+        n += `Night pain: ${nightPainText}<br>`;
         const constitutional = checkedValues('.constitutional');
-        if (constitutional.length) n += line('Constitutional Symptoms', constitutional.join(', '));
-        const prevEp = findCheckedRadio('previous_episodes');
-        n += line('Previous Episodes', prevEp === 'Yes' ? 'Yes — ' + val('previous_episodes_details') : prevEp);
+        n += `Constitutional symptoms: ${constitutional.length ? esc(constitutional.join(', ')) : '<span style="color:#16a34a">None</span>'}<br>`;
         const pmh = checkedValues('.pmh');
-        if (pmh.length) n += line('PMH', pmh.join(', '));
-        n += '\n';
+        n += `Past history: ${pmh.length ? esc(pmh.join(', ')) : '<span style="color:#16a34a">None relevant</span>'}<br>`;
+
+        // --- pGALS ---
+        n += heading('pGALS SCREENING');
+        const pgalsLine = (id, label) => {
+            const el = $(id);
+            const text = el && el.checked ? '<span style="color:#16a34a">Normal</span>' : ph('not performed');
+            n += `${label}: ${text}<br>`;
+        };
+        pgalsLine('pgals_gait_normal', 'Gait');
+        pgalsLine('pgals_arms_normal', 'Arms');
+        pgalsLine('pgals_legs_normal', 'Legs');
+        pgalsLine('pgals_spine_normal', 'Spine');
+        n += `pGALS notes: ${fieldVal(val('pgals_notes'))}<br>`;
 
         // --- Examination ---
-        n += 'EXAMINATION FINDINGS\n';
-        n += line('Temperature', val('exam_temp') ? val('exam_temp') + '°C' : '');
-        n += line('Heart Rate', val('exam_hr'));
-        n += line('Other Obs', val('exam_obs'));
-        n += line('General Appearance', findCheckedRadio('general_appearance'));
-        n += 'Testicular Torsion Reminder: Torsion can present as a limp — examine testes\n';
+        n += heading('EXAMINATION');
+        n += `Appearance: ${fieldVal(findCheckedRadio('general_appearance'))} | Temperature: ${val('exam_temp') ? esc(val('exam_temp')) + '°C' : ph('not recorded')} | HR: ${fieldVal(val('exam_hr'))}<br>`;
         const gait = checkedValues('.gait');
-        if (gait.length) n += line('Gait', gait.join(', '));
+        n += `Gait: ${gait.length ? esc(gait.join(', ')) : '<span style="color:#16a34a">Normal</span>'}<br>`;
         const limbSigns = checkedValues('.limb-sign');
-        if (limbSigns.length) n += line('Affected Limb', limbSigns.join(', '));
-        n += line('Hip IR/ER/Flexion/Abduction', [val('hip_ir'), val('hip_er'), val('hip_flexion'), val('hip_abduction')].some(v => v) ?
-            'IR ' + (val('hip_ir') || '-') + '° / ER ' + (val('hip_er') || '-') + '° / Flexion ' + (val('hip_flexion') || '-') + '° / Abduction ' + (val('hip_abduction') || '-') + '°' : '');
-        n += line('Pain on Hip Movement', findCheckedRadio('hip_pain_movement'));
-        n += line('Log Roll Test', findCheckedRadio('log_roll'));
-        const kneeExam = checkedValues('.knee-exam');
-        if (kneeExam.length) n += line('Knee Examination', kneeExam.join(', '));
-        n += line('Spine Assessment', findCheckedRadio('spine_assessment'));
-        n += line('Thomas Test', findCheckedRadio('thomas_test'));
-        n += line('FABER Test', findCheckedRadio('faber_test'));
+        n += `Affected limb: ${limbSigns.length ? `<span style="color:#dc2626;font-weight:bold">⚠️ POSITIVE: ${esc(limbSigns.join(', '))}</span>` : '<span style="color:#16a34a">No swelling/erythema/warmth/deformity</span>'}<br>`;
+        n += `Hip examination: IR ${val('hip_ir') ? esc(val('hip_ir')) + '°' : ph('n/a')} | ER ${val('hip_er') ? esc(val('hip_er')) + '°' : ph('n/a')} | Flexion ${val('hip_flexion') ? esc(val('hip_flexion')) + '°' : ph('n/a')} | Abduction ${val('hip_abduction') ? esc(val('hip_abduction')) + '°' : ph('n/a')}<br>`;
+        n += `Pain on movement: ${fieldVal(findCheckedRadio('hip_pain_movement'))} | Log roll: ${fieldVal(findCheckedRadio('log_roll'))} | FABER: ${fieldVal(findCheckedRadio('faber_test'))} | Thomas test: ${fieldVal(findCheckedRadio('thomas_test'))}<br>`;
         const legLength = findCheckedRadio('leg_length_discrepancy');
-        n += line('Leg Length Discrepancy', legLength === 'Yes' ? 'Yes' + (val('leg_length_measured') ? ' (' + val('leg_length_measured') + ' cm)' : '') : legLength);
+        n += `Leg length discrepancy: ${fieldVal(legLength === 'Yes' ? 'Yes' + (val('leg_length_measured') ? ' (' + val('leg_length_measured') + ' cm)' : '') : legLength)}<br>`;
+        const kneeExam = checkedValues('.knee-exam');
+        n += `Knee examination: ${kneeExam.length ? esc(kneeExam.join(', ')) : '<span style="color:#16a34a">Normal</span>'} | Spine: ${fieldVal(findCheckedRadio('spine_assessment'))}<br>`;
+        n += `NOTE: Torsion can present as a limp — testes examined: ${ph('not recorded')}<br>`;
 
-        // pGALS
-        n += '\npGALS SCREENING\n';
-        n += line('Gait', $('pgals_gait_normal') && $('pgals_gait_normal').checked ? 'Normal' : 'Not confirmed normal / see notes');
-        n += line('Arms', $('pgals_arms_normal') && $('pgals_arms_normal').checked ? 'Normal' : 'Not confirmed normal / see notes');
-        n += line('Legs', $('pgals_legs_normal') && $('pgals_legs_normal').checked ? 'Normal' : 'Not confirmed normal / see notes');
-        n += line('Spine', $('pgals_spine_normal') && $('pgals_spine_normal').checked ? 'Normal' : 'Not confirmed normal / see notes');
-        n += line('pGALS Notes', val('pgals_notes'));
-        n += '\n';
-
-        // --- Kocher / Septic arthritis criteria ---
+        // --- Kocher ---
+        n += heading('KOCHER CRITERIA (Septic Arthritis of Hip)');
+        const kFever = findCheckedRadio('kocher_fever');
+        const kNwb = findCheckedRadio('kocher_nwb');
+        const kEsr = findCheckedRadio('kocher_esr');
+        const kWbc = findCheckedRadio('kocher_wbc');
+        const kCrp = findCheckedRadio('kocher_crp');
+        const kocherItem = (v) => v === 'Yes' ? `<span style="color:#dc2626;font-weight:bold">Yes</span>` : fieldVal(v);
+        n += `Fever &gt;38.5°C: ${kocherItem(kFever)} | Non-weight bearing: ${kocherItem(kNwb)} | ESR ≥40: ${kocherItem(kEsr)} | WBC &gt;12: ${kocherItem(kWbc)} | CRP &gt;20: ${kocherItem(kCrp)}<br>`;
         const { score } = getKocherScore();
         const result = KOCHER_RESULTS[score] || KOCHER_RESULTS[0];
-        n += 'KOCHER CRITERIA — SEPTIC ARTHRITIS OF THE HIP\n';
-        n += 'Kocher score ' + score + '/5 — ' + result.prob + ' — ' + result.label + '\n';
-        n += 'Action: ' + result.action + '\n';
-        n += line('  Fever >38.5°C', findCheckedRadio('kocher_fever'));
-        n += line('  Unable to bear weight', findCheckedRadio('kocher_nwb'));
-        n += line('  ESR >40mm in first hour', findCheckedRadio('kocher_esr'));
-        n += line('  WCC >12 x10^9/L', findCheckedRadio('kocher_wbc'));
-        n += line('  CRP >20mg/L (Caird)', findCheckedRadio('kocher_crp'));
-        n += 'NOTE: Septic arthritis can still be present in the absence of these criteria.\n';
-        n += 'Management: If features consistent with septic arthritis (severe pain OR range of movement <75% normal) → urgent orthopaedics.\n';
-        n += '\n';
+        let scoreColour = '#16a34a';
+        let scoreText = `Low probability`;
+        if (score === 2) { scoreColour = '#d97706'; scoreText = 'Moderate probability — consider aspiration'; }
+        else if (score === 3 || score === 4) { scoreColour = '#dc2626'; scoreText = 'HIGH probability — urgent orthopaedics'; }
+        else if (score === 5) { scoreColour = '#dc2626'; scoreText = 'TREAT AS SEPTIC ARTHRITIS — emergency orthopaedics'; }
+        n += `Score: ${score}/5 — <span style="color:${scoreColour};font-weight:bold">${scoreText}</span> (${result.prob})<br>`;
+        n += `<span style="color:#d97706;font-weight:bold">⚠️ NOTE: Septic arthritis can still be present in the absence of all criteria</span><br>`;
 
         // --- Investigations ---
-        n += 'INVESTIGATIONS\n';
-        n += 'Guideline: FBC + blood film, ESR, CRP, blood cultures if febrile. X-ray 2 views (site of pain + pelvis). If SUFE suspected: AP + frog lateral. If osteomyelitis/persisting symptoms: MRI pelvis ± contrast (paediatric radiologist), bone scan, CT (in addition to MRI). CK, sickle cell screen.\n';
-        n += 'If suspicion of transient synovitis or septic arthritis: joint aspiration, microscopy and culture — cannot usually be differentiated by ultrasound; requires laboratory and clinical correlation.\n';
+        n += heading('INVESTIGATIONS');
         const bloods = checkedValues('.bloods');
-        if (bloods.length) n += line('Bloods Ordered', bloods.join(', '));
-        n += line('WBC', val('result_wbc'));
-        n += line('CRP', val('result_crp'));
-        n += line('ESR', val('result_esr'));
+        n += `Bloods ordered: ${bloods.length ? esc(bloods.join(', ')) : ph('none ordered')}<br>`;
+        n += `Results: WBC ${fieldVal(val('result_wbc'))} | CRP ${fieldVal(val('result_crp'))} | ESR ${fieldVal(val('result_esr'))}<br>`;
         const xrayReq = findCheckedRadio('xray_requested');
+        let xrayText;
         if (xrayReq === 'Yes') {
             const views = checkedValues('.xray-view');
-            n += line('X-Ray Views', views.join(', '));
-            n += line('X-Ray Result', val('xray_result'));
-            n += line('X-Ray Notes', val('xray_notes'));
-        } else if (xrayReq) {
-            n += line('X-Ray Requested', xrayReq);
+            xrayText = `Yes${views.length ? ' — ' + esc(views.join(', ')) : ''}${val('xray_result') ? ' — Result: ' + esc(val('xray_result')) : ''}`;
+        } else {
+            xrayText = fieldVal(xrayReq);
         }
+        n += `X-ray: ${xrayText}<br>`;
         const usReq = findCheckedRadio('us_hip_requested');
+        let usText;
         if (usReq === 'Yes') {
-            n += line('US Hip Effusion', findCheckedRadio('us_effusion'));
-            n += line('US Hip Volume', val('us_volume') ? val('us_volume') + ' ml' : '');
-        } else if (usReq) {
-            n += line('US Hip Requested', usReq);
+            usText = `Yes — Effusion: ${fieldVal(findCheckedRadio('us_effusion'))}${val('us_volume') ? ' (' + esc(val('us_volume')) + ' ml)' : ''}`;
+        } else {
+            usText = fieldVal(usReq);
         }
-        n += line('MRI Requested', findCheckedRadio('mri_requested'));
-        n += line('Bone Scan', findCheckedRadio('bone_scan'));
-        n += '\n';
+        n += `Ultrasound hip: ${usText} | MRI: ${fieldVal(findCheckedRadio('mri_requested'))}<br>`;
 
         // --- Differential diagnosis ---
-        n += 'MOST LIKELY DIAGNOSIS / DIFFERENTIALS\n';
+        n += heading('DIFFERENTIAL DIAGNOSIS');
         const mostLikely = val('most_likely_dx');
-        n += line('Most Likely Diagnosis', mostLikely === 'Other (free text)' ? val('most_likely_dx_other') : mostLikely);
+        n += `Most likely: ${fieldVal(mostLikely === 'Other (free text)' ? val('most_likely_dx_other') : mostLikely, 'not specified')}<br>`;
         const differentials = checkedValues('.differential');
-        if (differentials.length) n += line('Differential Diagnoses', differentials.join(', '));
-        n += '\n';
+        n += `Differentials: ${differentials.length ? esc(differentials.join(', ')) : ph('none selected')}<br>`;
+        const ageYears = getAgeYears();
+        let ageGroup = ph('age not recorded');
+        if (ageYears !== null) {
+            if (ageYears <= 3) ageGroup = '0–3yr differentials (transient synovitis, septic arthritis, DDH, toddler\'s fracture)';
+            else if (ageYears <= 10) ageGroup = '3–10yr differentials (transient synovitis, Perthes disease, septic arthritis, JIA)';
+            else ageGroup = '10–15yr differentials (SUFE, septic arthritis, JIA, overuse injury)';
+        }
+        n += `Age group differentials considered: ${ageGroup}<br>`;
 
         // --- Red flags ---
+        n += heading('RED FLAGS');
         const flags = updateRedFlags();
         const flagLabels = {
             age_lt3: 'Age <3yr',
@@ -439,34 +450,25 @@ document.addEventListener('DOMContentLoaded', () => {
             nai: 'Suspected non-accidental injury'
         };
         const activeFlags = Object.keys(flags).filter(k => flags[k]).map(k => flagLabels[k]);
-        n += 'RED FLAGS (LOCAL GUIDELINE)\n';
-        n += activeFlags.length ? activeFlags.join('\n') + '\n' : 'No red flags triggered\n';
-        n += '\n';
+        n += activeFlags.length
+            ? `<span style="color:#dc2626;font-weight:bold">⚠️ ${esc(activeFlags.join(', '))}</span><br>`
+            : `<span style="color:#16a34a">No red flags identified</span><br>`;
 
         // --- Management ---
-        n += 'MANAGEMENT PLAN\n';
+        n += heading('MANAGEMENT &amp; DISPOSITION');
         const analgesia = findCheckedRadio('analgesia_given');
-        n += line('Analgesia Given', analgesia === 'Yes' ? 'Yes — ' + val('analgesia_details') : analgesia);
+        n += `Analgesia: ${fieldVal(analgesia === 'Yes' ? 'Yes — ' + val('analgesia_details') : analgesia)}<br>`;
         const ortho = findCheckedRadio('ortho_referral');
-        n += line('Orthopaedics Referral', ortho ? ortho + (val('ortho_urgency') ? ' (' + val('ortho_urgency') + ')' : '') : '');
-        n += line('Rheumatology Referral', findCheckedRadio('rheum_referral'));
-        n += line('Haematology/Oncology Referral', findCheckedRadio('haem_onc_referral'));
+        n += `Orthopaedics referral: ${fieldVal(ortho ? ortho + (val('ortho_urgency') ? ' (' + val('ortho_urgency') + ')' : '') : ortho)} | Rheumatology referral: ${fieldVal(findCheckedRadio('rheum_referral'))} | Haematology/Oncology referral: ${fieldVal(findCheckedRadio('haem_onc_referral'))}<br>`;
         const abx = findCheckedRadio('antibiotics_given');
-        n += line('Antibiotics', abx === 'Yes' ? 'Yes — ' + val('antibiotics_which') : abx);
-        n += line('Joint Aspiration', findCheckedRadio('joint_aspiration'));
-        n += '\n';
+        n += `Antibiotics: ${fieldVal(abx === 'Yes' ? 'Yes — ' + val('antibiotics_which') : abx)} | Joint aspiration: ${fieldVal(findCheckedRadio('joint_aspiration'))} | Disposition: ${fieldVal(val('disposition'))}<br>`;
+        n += `Safety netting: ${fieldVal(findCheckedRadio('safety_netting'))} | Follow-up: ${fieldVal(val('followup_type') ? val('followup_type') + (val('followup_details') ? ' — ' + val('followup_details') : '') : '')}<br>`;
+        n += `Responsible clinician: ${fieldVal(val('responsible_clinician'))} | Senior review: ${fieldVal(val('senior_review'))}<br>`;
 
-        // --- Disposition ---
-        n += 'DISPOSITION\n';
-        n += line('Disposition', val('disposition'));
-        n += line('Safety Netting Advice Given', findCheckedRadio('safety_netting'));
-        n += line('Follow-Up', val('followup_type') ? val('followup_type') + (val('followup_details') ? ' — ' + val('followup_details') : '') : '');
-        n += line('Responsible Clinician', val('responsible_clinician'));
-        n += line('Senior Review By', val('senior_review'));
-
-        if ($('epr-output')) $('epr-output').innerText = n;
+        if ($('epr-output')) $('epr-output').innerHTML = n;
     }
     window.updateNotes = updateNotes;
+
 
     // ===================== AUTO-SAVE / LOAD =====================
     function saveState() {
